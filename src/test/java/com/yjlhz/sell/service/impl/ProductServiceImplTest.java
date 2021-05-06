@@ -51,7 +51,7 @@ class ProductServiceImplTest {
         productInfo.setProductStock(100);
         productInfo.setProductDescription("这是一只虾");
         productInfo.setProductIcon("http://www.baidu.com");
-        productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
+        productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
         productInfo.setCategoryType(2);
         ProductInfo result = productService.save(productInfo);
         Assert.assertNotNull(result);

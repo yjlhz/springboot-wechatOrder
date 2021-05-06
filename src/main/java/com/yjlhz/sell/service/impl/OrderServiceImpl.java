@@ -58,9 +58,8 @@ public class OrderServiceImpl implements OrderService {
                     .multiply(new BigDecimal(orderDetail.getProductQuantity()))
                     .add(orderAmount);
             //订单详情入库
-            orderDetail.setOrderId(KeyUtil.genUniqueKey());
-            orderDetail.setDetailId(orderId);
-            //拷贝属性
+            orderDetail.setOrderId(orderId);
+            orderDetail.setDetailId(KeyUtil.genUniqueKey());
             BeanUtils.copyProperties(productInfo,orderDetail);
             orderDetailRepository.save(orderDetail);
         }
