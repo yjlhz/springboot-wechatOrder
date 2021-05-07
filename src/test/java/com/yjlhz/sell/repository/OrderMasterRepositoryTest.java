@@ -22,7 +22,7 @@ class OrderMasterRepositoryTest {
     @Autowired
     private OrderMasterRepository repository;
 
-    private final String OPENID = "110110";
+    private final String OPENID = " ew3euwhd7sjw9diwkq";
 
     @Test
     public void saveTest(){
@@ -39,9 +39,9 @@ class OrderMasterRepositoryTest {
 
     @Test
     void findByBuyerOpenid() {
-        PageRequest request = PageRequest.of(0,1);
+        PageRequest request = PageRequest.of(0,10);
         Page<OrderMaster> result = repository.findByBuyerOpenid(OPENID, request);
+        System.out.println(result.getContent());
         Assert.assertNotEquals(0,result.getTotalElements());
-        System.out.println(result.getTotalElements());
     }
 }
