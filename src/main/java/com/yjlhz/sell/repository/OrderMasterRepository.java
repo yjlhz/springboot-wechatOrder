@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderMasterRepository extends JpaRepository<OrderMaster,String> {
     Page<OrderMaster> findByBuyerOpenid(String buyerOpenid, Pageable pageable);
+    Page<OrderMaster> findByBuyerPhone(String buyerPhone,Pageable pageable);
 }

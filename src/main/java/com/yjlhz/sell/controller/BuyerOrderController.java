@@ -84,4 +84,20 @@ public class BuyerOrderController {
         buyerService.cancelOrder(openid,orderId);
         return ResultVOUtil.success();
     }
+
+    //查看当前手机号的订单
+    @GetMapping("/phone")
+    public ResultVO<List<OrderDTO>> phoneOrder(@RequestParam("buyerPhone") String buyerPhone,
+                                     @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                     @RequestParam(value = "size", defaultValue = "10") Integer size){
+        if (!StringUtils.hasLength(buyerPhone)) {
+            log.error("【查询订单列表】手机号为空");
+            throw new SellException(ResultEnum.PARAM_ERROR);
+        }
+
+        PageRequest request = PageRequest.of(page, size);
+        Page<OrderDTO> orderDTOPage = orderService.findByPhone(buyerPhone, request);
+
+        return ResultVOUtil.success(orderDTOPage.getContent());
+    }
 }

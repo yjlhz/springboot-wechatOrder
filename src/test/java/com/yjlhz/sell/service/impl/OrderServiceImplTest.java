@@ -88,4 +88,11 @@ class OrderServiceImplTest {
         OrderDTO result = orderService.paid(orderDTO);
         Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(),result.getPayStatus());
     }
+
+    @Test
+    void findByPhone(){
+        PageRequest request = PageRequest.of(0,10);
+        Page<OrderDTO> orderDTOPage = orderService.findByPhone("18926317788", request);
+        Assert.assertNotEquals(0,orderDTOPage.getTotalElements());
+    }
 }

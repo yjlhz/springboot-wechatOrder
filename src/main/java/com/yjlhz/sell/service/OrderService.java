@@ -2,6 +2,7 @@ package com.yjlhz.sell.service;
 
 import com.yjlhz.sell.dataobject.OrderMaster;
 import com.yjlhz.sell.dto.OrderDTO;
+import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,5 +25,7 @@ public interface OrderService {
 
     /** 支付订单 */
     OrderDTO paid(OrderDTO orderDTO);
+
+    Page<OrderDTO> findByPhone(String buyerPhone,Pageable pageable);
 
 }
