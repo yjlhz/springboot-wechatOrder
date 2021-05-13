@@ -95,4 +95,11 @@ class OrderServiceImplTest {
         Page<OrderDTO> orderDTOPage = orderService.findByPhone("18926317788", request);
         Assert.assertNotEquals(0,orderDTOPage.getTotalElements());
     }
+
+    @Test
+    void list(){
+        PageRequest request = PageRequest.of(0,2);
+        Page<OrderDTO> orderDTOPage = orderService.findList(request);
+        Assert.assertNotEquals(0,orderDTOPage.getTotalElements());
+    }
 }
