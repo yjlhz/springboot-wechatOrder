@@ -1,5 +1,6 @@
 package com.yjlhz.sell.controller;
 
+import com.yjlhz.sell.config.ProjectUrlConfig;
 import com.yjlhz.sell.enums.ResultEnum;
 import com.yjlhz.sell.exception.SellException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,15 @@ public class WechatController {
     @Autowired
     private WxMpService wxMpService;
 
+    @Autowired
+    private WxMpService wxOpenService;
+
+    @Autowired
+    private ProjectUrlConfig projectUrlConfig;
+
     @GetMapping("/authorize")
     public String authorize(@RequestParam("returnUrl") String returnUrl){
-        String url = "http://yjlhz.nat300.top/sell/wechat/userInfo";
+        String url = projectUrlConfig.getWechatMpAuthorize() +  "/sell/wechat/userInfo";
         String redirectUrl = wxMpService.getOAuth2Service().buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_BASE, URLEncoder.encode(returnUrl));
         return "redirect:"+redirectUrl;
     }
@@ -42,4 +49,25 @@ public class WechatController {
         String openId = wxMpOAuth2AccessToken.getOpenId();
         return "redirect:" + returnUrl + "?openid=" + openId;
     }
+
+    @GetMapping("/qrAuthorize")
+    public String qrAuthorize(@RequestParam("returnUrl") String returnUrl){
+        String url = projectUrlConfig.getWechatOpenAuthorize() + "/sell/wechat/qrUserInfo";
+        String redirectUrl = wxOpenService.buildQrConnectUrl(url, WxConsts.QrConnectScope.SNSAPI_LOGIN, URLEncoder.encode(returnUrl));
+        return "redirect:"+redirectUrl;
+    }
+
+    @GetMapping("/qrUserInfo")
+    public String qrUserInfo(@RequestParam("code") String code,@RequestParam("state") String returnUrl){
+        WxOAuth2AccessToken wxMpOAuth2AccessToken = new WxOAuth2AccessToken();
+        try {
+            wxMpOAuth2AccessToken = wxOpenService.getOAuth2Service().getAccessToken(code);
+        } catch (WxErrorException e) {
+            log.error("【微信网页授权异常】{}",e);
+            throw new SellException(ResultEnum.WECHAT_MP_ERROR.getCode(),e.getError().getErrorMsg());
+        }
+        String openId = wxMpOAuth2AccessToken.getOpenId();
+        return "redirect:" + returnUrl + "?openid=" + openId;
+    }
+
 }
