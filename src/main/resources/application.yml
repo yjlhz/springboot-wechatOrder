@@ -24,6 +24,8 @@ wechat:
   mchKey:
   KeyPath:
   notifyUrl: http://yjlhz.nat300.top/sell/pay/notify
+  templateId:
+    orderStatus: 6fXnNuH5hcjhZ6rX6BgyXefswg7Osi9Mbj5u1vb_Qi0
 
 projecturl:
   wechatMpAuthorize: http://yjlhz.nat300.top
