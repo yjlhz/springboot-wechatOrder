@@ -32,4 +32,19 @@
 **/src/main/resources/下的各个包：**
 <br>templates: 后台管理系统的ftl文件
 <br>static: 需要引入的文件，入mp3文件，错误界面等
-## 五、
+## 五、存在问题
+### 1、微信授权部分
+**因为微信授权这部分需要企业号才能完成全部功能，所以测试存在一定的门槛，下面主要讲解一下这部分的逻辑：**
+<br> 1)  对应的接口在controller包下的WechatController类中，对应为authorize和userinfo这两个方法
+<br> 2)  WxMpService是第三方sdk提供的类，需要通过config配置好公众号appId等属性，然后写好returnUrl，然后进行跳转。
+<br> 3)  获得code之后，再以code和returnUrl为参数访问userInfo接口，userInfo通过code去获得access_token和openid等信息，再把openid拼接到returnUrl上（returnUrl一般为点餐界面，没有openid传来的话，无法进入该界面），访问returnUrl，可以进入点餐界面
+### 2、微信支付部分逻辑
+**因为微信支付这部分需要企业号才能完成全部功能，所以测试存在一定的门槛，下面主要讲解一下这部分的逻辑：**
+<br> 1)  对应的接口在controller下的PayController中，先看create接口。 用户下单成功，后端给订单分配好订单id，并转化成OrderMaster相关信息存在数据库中，向前端返回订单id，前端再用该订单id访问支付的create接口，同时还传来一个returnUrl(用于支付后跳转到订单详情页)
+<br> 2)  后端根据订单id查询到对应的订单信息，填入PayRequest中（如订单号，openid，订单金额），再用PayService（同样在config中配置好了appId，商家id等之后自动注入）对PayRequest使用pay方法，获得PayResponse对象，这里就储存了预付款信息，然后跳转对应的界面.ftlh，把PayResponse对象中的某些属性动态填写进ftlh文件中，用户访问该界面，就可以跳到支付界面。
+### 3、高并发场景
+**在高并发场景下可能会有一些bug。**
+## 六、优化方向
+使用Redis分布式锁，完善高并发场景下的可能会出现的bug，如超卖现象等。
+## 六、作者
+yjlzh 华南理工大学
