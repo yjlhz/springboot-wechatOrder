@@ -30,6 +30,7 @@
 <br>util: 工具类，可用于初始化某些值，如获取一串随机字符用作订单号，对long型的数据比较大小等
 <br>VO: 前端格式需要的实体类
 <br>test: 测试类
+<br>
 **/src/main/resources/下的各个包：**
 <br>templates: 后台管理系统的ftl文件
 <br>static: 需要引入的文件，入mp3文件，错误界面等
